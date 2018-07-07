@@ -1,4 +1,4 @@
-# clojure-world-cup-cli
+# World Cup CLI
 
 FIXME: description
 
@@ -8,29 +8,19 @@ Download from http://example.com/FIXME.
 
 ## Usage
 
-FIXME: explanation
+### Groups
 
-    $ java -jar clojure-world-cup-cli-0.1.0-standalone.jar [args]
+#### All groups
 
-## Options
+`cup -g`
 
-FIXME: listing of options this app accepts.
+#### Specific group
 
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+`cup -g="A" // or B, C, D, E, F, G, H`
 
 ## License
 
-Copyright © 2018 FIXME
+Copyright © 2018 Marcel Stolin
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
