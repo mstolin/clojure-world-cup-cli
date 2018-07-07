@@ -1,10 +1,40 @@
 (ns clojure-world-cup-cli.core
-  (:require [clojure.tools.cli :refer [cli]])
+  (:require [clojure.tools.cli :refer [parse-opts]])
   (:gen-class))
 
+(def cli-options
+  [["-n" "--name NAME" "The name"
+    :default "A"]
+   ["-h" "--help" "HELII"]])
+
+(defn validate-args
+  ""
+  [args]
+  (let [{:keys [options arguments errors summary]} (parse-opts args cli-options)]
+    (cond
+      ;; The help summary
+      (:help options) {:summary summary}
+      ;; The actions
+      (and (= 1 (count arguments))
+           (#{"groups", "group"} (first arguments)))
+      {:action (first arguments) :options options}
+      ;; The error message
+      errors {:message "IRGENDWIE ERROR"})))
+
+(defn print-help [message]
+  (println message))
+
+(defn show-groups []
+  (println "ALL"))
+
+(defn show-group [options]
+  (let [{:keys [name]} options]
+    (println name)))
+
 (defn -main [& args]
-  (let [[opts args banner] (cli args
-                                ["-h" "--help" "Print this help"
-                                 :default false :flag true])]
-    (when (:help opts)
-      (println banner))))
+  (let [{:keys [summary action options]} (validate-args args)]
+    (if summary
+      (print-help summary)
+      (case action
+        "groups" (show-groups)
+        "group" (show-group options)))))
