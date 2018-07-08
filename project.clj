@@ -4,7 +4,8 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"] 
-                 [org.clojure/tools.cli "0.3.7"]]
+                 [org.clojure/tools.cli "0.3.7"]
+                 [clj-http "3.9.0"]]
   :main ^:skip-aot clojure-world-cup-cli.core
   :target-path "target"
   :profiles {:uberjar {:aot :all}}

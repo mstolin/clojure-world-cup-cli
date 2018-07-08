@@ -1,11 +1,16 @@
 (ns clojure-world-cup-cli.core
-  (:require [clojure.tools.cli :refer [parse-opts]])
+  (:require [clojure.tools.cli :refer [parse-opts]]
+            [clj-http.client :as client])
   (:gen-class))
 
 (def cli-options
   [["-n" "--name NAME" "The name of a specific group"
     :default "A"]
    ["-h" "--help" "You are using this option right now :)"]])
+
+(defn download-world-cup "" []
+  (:body
+    (client/get "https://raw.githubusercontent.com/mstolin/fifa-worldcup-2018/master/data.json" {:as :json})))
 
 (defn validate-args
   ""
@@ -33,7 +38,8 @@
        ""
        "Commands:"
        (format "  %-10s %s" "group" "Shows a specific group")
-       (format "  %-10s %s" "groups" "Shows all groups at once sorted alphabetically")])))
+       (format "  %-10s %s" "groups" "Shows all groups at once sorted alphabetically")
+       ""])))
 
 (defn show-groups []
   (println "ALL"))
@@ -46,6 +52,8 @@
   (let [{:keys [summary action options]} (validate-args args)]
     (if summary
       (print-help summary)
-      (case action
-        "groups" (show-groups)
-        "group" (show-group options)))))
+      (println (download-world-cup)))))
+
+;(case action
+;        "groups" (show-groups)
+;        "group" (show-group options))
