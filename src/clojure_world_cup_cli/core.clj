@@ -5,7 +5,9 @@
   (:gen-class))
 
 (def cli-options
-  [["-n" "--name NAME" "The name of a specific group or team"]
+  [["-n" "--name NAME" "The name of a specific group or team"
+    :default false]
+   ["-a" "--all" "List all items"]
    ["-h" "--help" "You are using this option right now :)"]])
 
 (defn download-world-cup "" []
@@ -41,13 +43,13 @@
        (format "  %-10s %s" "team" "Shows a specific team")
        ""])))
 
-(defn show-groups [groups]
-  (println groups))
-
 (defn show-group [options groups]
-  (let [{:keys [name]} options]
-    (println 
-      (get groups (keyword name) "No such group"))))
+  (let [{:keys [name all]} options]
+    (if all
+      (println groups)
+      (println 
+        (get groups (keyword name) "No such group"))
+      )))
 
 (defn -main [& args]
   (let [{:keys [summary action options]} (validate-args args)]
@@ -55,5 +57,4 @@
       (print-help summary)
       (let [{:keys [stadiums groups teams knockout]} (download-world-cup)]
         (case action
-          "groups" (show-groups groups)
           "group" (show-group options groups))))))
