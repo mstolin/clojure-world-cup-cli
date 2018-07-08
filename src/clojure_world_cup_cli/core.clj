@@ -3,9 +3,9 @@
   (:gen-class))
 
 (def cli-options
-  [["-n" "--name NAME" "The name"
+  [["-n" "--name NAME" "The name of a specific group"
     :default "A"]
-   ["-h" "--help" "HELII"]])
+   ["-h" "--help" "You are using this option right now :)"]])
 
 (defn validate-args
   ""
@@ -22,7 +22,18 @@
       errors {:message "IRGENDWIE ERROR"})))
 
 (defn print-help [message]
-  (println message))
+  (println 
+    (clojure.string/join "\n" 
+      ["A simple command line interface for the fifa world cup 2018."
+       ""
+       "Usage: cup COMMAND [option]"
+       ""
+       "Options:"
+       message
+       ""
+       "Commands:"
+       (format "  %-10s %s" "group" "Shows a specific group")
+       (format "  %-10s %s" "groups" "Shows all groups at once sorted alphabetically")])))
 
 (defn show-groups []
   (println "ALL"))
