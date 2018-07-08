@@ -5,7 +5,8 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"] 
                  [org.clojure/tools.cli "0.3.7"]
-                 [clj-http "3.9.0"]]
+                 [clj-http "3.9.0"]
+                 [cheshire "5.8.0"]]
   :main ^:skip-aot clojure-world-cup-cli.core
   :target-path "target"
   :profiles {:uberjar {:aot :all}}

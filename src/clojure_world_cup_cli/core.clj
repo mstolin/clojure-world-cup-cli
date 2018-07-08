@@ -1,6 +1,7 @@
 (ns clojure-world-cup-cli.core
   (:require [clojure.tools.cli :refer [parse-opts]]
-            [clj-http.client :as client])
+            [clj-http.client :as client]
+            [cheshire.core :refer :all])
   (:gen-class))
 
 (def cli-options
