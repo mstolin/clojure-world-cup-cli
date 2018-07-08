@@ -39,7 +39,7 @@
        message
        ""
        "Commands:"
-       (format "  %-10s %s" "group" "Shows a specific group")
+       (format "  %-10s %s" "group" "Shows a specific group (a - h)")
        (format "  %-10s %s" "team" "Shows a specific team")
        ""])))
 
@@ -51,10 +51,18 @@
         (get groups (keyword name) "No such group"))
       )))
 
+(defn show-team [options teams]
+  (let [{:keys [name all]} options]
+    (if all
+      (println teams)
+      (println 
+        (filter #(= (:name %) name) teams)))))
+
 (defn -main [& args]
   (let [{:keys [summary action options]} (validate-args args)]
     (if summary
       (print-help summary)
       (let [{:keys [stadiums groups teams knockout]} (download-world-cup)]
         (case action
-          "group" (show-group options groups))))))
+          "group" (show-group options groups)
+          "team" (show-team options teams))))))
