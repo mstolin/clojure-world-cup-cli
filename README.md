@@ -8,15 +8,27 @@ Download from http://example.com/FIXME.
 
 ## Usage
 
+`cup COMMAND [option]`
+
+For help just run `cup -h`
+
 ### Groups
 
-#### All groups
+All groups: `cup group -a`
 
-`cup -g`
+A specific group: `cup group -n a`
 
-#### Specific group
+### Teams
 
-`cup -g="A" // or B, C, D, E, F, G, H`
+All teams: `cup team -a`
+
+A specific team: `cup team -n "Belgium"`
+
+### Stadiums
+
+All stadiums: `cup stadium -a`
+
+A specific stadium: `cup stadium -n "Luzhniki Stadium"`
 
 ## License
 
