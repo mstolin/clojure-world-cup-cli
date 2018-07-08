@@ -5,7 +5,7 @@
   (:gen-class))
 
 (def cli-options
-  [["-n" "--name NAME" "The name of a specific group"
+  [["-n" "--name NAME" "The name of a specific group or team"
     :default "A"]
    ["-h" "--help" "You are using this option right now :)"]])
 
@@ -22,7 +22,7 @@
       (:help options) {:summary summary}
       ;; The actions
       (and (= 1 (count arguments))
-           (#{"groups", "group"} (first arguments)))
+           (#{"groups", "group", "team"} (first arguments)))
       {:action (first arguments) :options options}
       ;; The error message
       errors {:message "IRGENDWIE ERROR"})))
@@ -42,10 +42,10 @@
        (format "  %-10s %s" "groups" "Shows all groups at once sorted alphabetically")
        ""])))
 
-(defn show-groups []
-  (println "ALL"))
+(defn show-groups [groups]
+  (println groups))
 
-(defn show-group [options]
+(defn show-group [options groups]
   (let [{:keys [name]} options]
     (println name)))
 
@@ -53,7 +53,8 @@
   (let [{:keys [summary action options]} (validate-args args)]
     (if summary
       (print-help summary)
-      (println (download-world-cup)))))
+      (let [{:keys [stadiums groups teams knockout]} (download-world-cup)]
+        (println groups)))))
 
 ;(case action
 ;        "groups" (show-groups)
