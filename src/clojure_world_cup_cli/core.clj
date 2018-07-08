@@ -23,10 +23,10 @@
       (:help options) {:summary summary}
       ;; The actions
       (and (= 1 (count arguments))
-           (#{"group", "team"} (first arguments)))
+           (#{"group", "team", "stadium"} (first arguments)))
       {:action (first arguments) :options options}
       ;; The error message
-      errors {:message "IRGENDWIE ERROR"})))
+      errors {:summary summary})))
 
 (defn print-help [message]
   (println 
@@ -48,15 +48,23 @@
     (if all
       (println groups)
       (println 
-        (get groups (keyword name) "No such group"))
-      )))
+        (get groups (keyword name) "No such group")))))
 
 (defn show-team [options teams]
   (let [{:keys [name all]} options]
     (if all
       (println teams)
-      (println 
-        (filter #(= (:name %) name) teams)))))
+      (if-let [team (filter #(= (:name %) name) teams)]
+        (println team)
+        (println "No such team")))))
+
+(defn show-stadium [options stadiums]
+  (let [{:keys [name all]} options]
+    (if all
+      (println stadiums)
+      (if-let [stadium (filter #(= (:name %) name) stadiums)]
+        (println stadium)
+        (println "No such team")))))
 
 (defn -main [& args]
   (let [{:keys [summary action options]} (validate-args args)]
@@ -65,4 +73,5 @@
       (let [{:keys [stadiums groups teams knockout]} (download-world-cup)]
         (case action
           "group" (show-group options groups)
-          "team" (show-team options teams))))))
+          "team" (show-team options teams)
+          "stadium" (show-stadium options stadiums))))))
