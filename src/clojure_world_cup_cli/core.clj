@@ -1,5 +1,6 @@
 (ns clojure-world-cup-cli.core
-  (:require [clojure.tools.cli :refer [parse-opts]]
+  (:require [clojure.pprint :as pprint :refer [pprint print-table]]
+            [clojure.tools.cli :refer [parse-opts]]
             [clj-http.client :as client]
             [cheshire.core :refer :all])
   (:gen-class))
@@ -43,10 +44,25 @@
        (format "  %-10s %s" "team" "Shows a specific team")
        ""])))
 
+(defn print-group [group]
+  (let [{:keys [name winner runnerup matches]} group]
+    (do
+      (println
+        (clojure.string/join "\n" 
+          [(clojure.string/upper-case name)
+          ""
+          (format "%s %-10s %s" "🥇" "Winner:" winner)
+          (format "%s %-10s %s" "🥈" "Runner-Up:" runnerup)
+          ""
+          ""]))
+      (pprint matches)
+      (println "MATCHES:")
+      (print-table [:date :stadium] (reverse (sort-by :date matches))))))
+    
 (defn show-group [options groups]
   (let [{:keys [name all]} options]
     (if all
-      (println groups)
+      (print-group (get groups :a))
       (println 
         (get groups (keyword name) "No such group")))))
 
