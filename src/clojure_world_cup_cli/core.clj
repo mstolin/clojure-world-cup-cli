@@ -60,7 +60,7 @@
         (reverse 
           (for [keyVal matches] 
             (hash-map 
-              "Date" (get keyVal :date)
+              "Date" (.format (java.text.SimpleDateFormat. "MMM d yyyy, h:mm a") (.parse (java.text.SimpleDateFormat. "yyyy-MM-dd'T'HH:mm:ssXXX") (get keyVal :date)))
               "Result" (format 
                         "%s %s:%s %s"
                         (get keyVal :home_team)
