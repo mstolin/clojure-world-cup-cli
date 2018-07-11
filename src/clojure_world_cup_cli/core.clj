@@ -55,9 +55,19 @@
           (format "%s %-10s %s" "🥈" "Runner-Up:" runnerup)
           ""
           ""]))
-      (pprint matches)
       (println "MATCHES:")
-      (print-table [:date :stadium] (reverse (sort-by :date matches))))))
+      (print-table ["Date" "Result" "Stadium"]
+        (reverse 
+          (for [keyVal matches] 
+            (hash-map 
+              "Date" (get keyVal :date)
+              "Result" (format 
+                        "%s %s:%s %s"
+                        (get keyVal :home_team)
+                        (get keyVal :home_result)
+                        (get keyVal :away_result)
+                        (get keyVal :away_team))
+              "Stadium" (get keyVal :stadium))))))))
     
 (defn show-group [options groups]
   (let [{:keys [name all]} options]
