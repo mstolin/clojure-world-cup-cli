@@ -46,7 +46,7 @@
        (format "  %-10s %s" "team" "Shows a specific team")
        ""])))
 
-(defn print-group [group teams]
+(defn print-group [group teams stadiums]
   (let [{:keys [name winner runnerup matches]} group]
     (do
       (println
@@ -69,12 +69,12 @@
                         (get keyVal :home_result)
                         (get keyVal :away_result)
                         (get (first (filter #(= (:id %) (get keyVal :away_team)) teams)) :emojiString))
-              "Stadium" (get keyVal :stadium))))))))
+              "Stadium" (get (first (filter #(= (:id %) (get keyVal :stadium)) stadiums)) :name))))))))
     
-(defn show-group [options groups teams]
+(defn show-group [options groups teams stadiums]
   (let [{:keys [name all]} options]
     (if-let [group (get groups (keyword name))]
-      (print-group group teams)
+      (print-group group teams stadiums)
       (println "No such group"))))
 
 (defn show-team [options teams]
@@ -99,6 +99,6 @@
       (print-help summary)
       (let [{:keys [stadiums groups teams knockout]} (download-world-cup)]
         (case action
-          "group" (show-group options groups teams)
+          "group" (show-group options groups teams stadiums)
           "team" (show-team options teams)
           "stadium" (show-stadium options stadiums))))))
