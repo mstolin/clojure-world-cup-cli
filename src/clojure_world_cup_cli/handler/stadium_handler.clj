@@ -1,5 +1,6 @@
 (ns clojure-world-cup-cli.handler.stadium-handler
     (:gen-class))
 
-(defn print-bla []
-    (println "BLAAAA"))
+(defn get-first-stadium [stadiums id]
+    (first 
+        (filter #(= (:id %) id) stadiums)))

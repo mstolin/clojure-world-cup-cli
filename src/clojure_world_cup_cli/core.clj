@@ -67,12 +67,16 @@
             (hash-map 
               "Date" (.format (java.text.SimpleDateFormat. "MMM d yyyy, h:mm a") (.parse (java.text.SimpleDateFormat. "yyyy-MM-dd'T'HH:mm:ssXXX") (get keyVal :date)))
               "Result" (format 
-                        "%-5s %s:%s %-5s"
+                        "%s %s:%s %s"
                         (get (team-handler/get-first-team teams (get keyVal :home_team)) :emojiString)
                         (get keyVal :home_result)
                         (get keyVal :away_result)
                         (get (team-handler/get-first-team teams (get keyVal :away_team)) :emojiString))
-              "Stadium" (get (first (filter #(= (:id %) (get keyVal :stadium)) stadiums)) :name))))))))
+              "Stadium" (let [stadium (stadium-handler/get-first-stadium stadiums (get keyVal :stadium))]
+                          (format
+                            "%s (%s)"
+                            (get stadium :name)
+                            (get stadium :city))))))))))
     
 (defn show-group [options groups teams stadiums]
   (let [{:keys [name]} options]
