@@ -5,10 +5,12 @@
             [cheshire.core :refer :all])
   (:gen-class))
 
+
+
 (def cli-options
   [["-n" "--name NAME" "The name of a specific group or team"
     :default false]
-   ["-a" "--all" "List all items"]
+   ;["-a" "--all" "List all items"]
    ["-h" "--help" "You are using this option right now :)"]])
 
 (defn download-world-cup "" []
@@ -44,15 +46,15 @@
        (format "  %-10s %s" "team" "Shows a specific team")
        ""])))
 
-(defn print-group [group]
+(defn print-group [group teams]
   (let [{:keys [name winner runnerup matches]} group]
     (do
       (println
         (clojure.string/join "\n" 
           [(clojure.string/upper-case name)
           ""
-          (format "%s %-10s %s" "🥇" "Winner:" winner)
-          (format "%s %-10s %s" "🥈" "Runner-Up:" runnerup)
+          (format "%s %-10s %s" "🥇" "Winner:" (get (first (filter #(= (:id %) winner) teams)) :emojiString))
+          (format "%s %-10s %s" "🥈" "Runner-Up:" (get (first (filter #(= (:id %) runnerup) teams)) :emojiString))
           ""
           ""]))
       (println "MATCHES:")
@@ -62,19 +64,18 @@
             (hash-map 
               "Date" (.format (java.text.SimpleDateFormat. "MMM d yyyy, h:mm a") (.parse (java.text.SimpleDateFormat. "yyyy-MM-dd'T'HH:mm:ssXXX") (get keyVal :date)))
               "Result" (format 
-                        "%s %s:%s %s"
-                        (get keyVal :home_team)
+                        "%-5s %s:%s %-5s"
+                        (get (first (filter #(= (:id %) (get keyVal :home_team)) teams)) :emojiString)
                         (get keyVal :home_result)
                         (get keyVal :away_result)
-                        (get keyVal :away_team))
+                        (get (first (filter #(= (:id %) (get keyVal :away_team)) teams)) :emojiString))
               "Stadium" (get keyVal :stadium))))))))
     
-(defn show-group [options groups]
+(defn show-group [options groups teams]
   (let [{:keys [name all]} options]
-    (if all
-      (print-group (get groups :a))
-      (println 
-        (get groups (keyword name) "No such group")))))
+    (if-let [group (get groups (keyword name))]
+      (print-group group teams)
+      (println "No such group"))))
 
 (defn show-team [options teams]
   (let [{:keys [name all]} options]
@@ -98,6 +99,6 @@
       (print-help summary)
       (let [{:keys [stadiums groups teams knockout]} (download-world-cup)]
         (case action
-          "group" (show-group options groups)
+          "group" (show-group options groups teams)
           "team" (show-team options teams)
           "stadium" (show-stadium options stadiums))))))
