@@ -1,5 +1,8 @@
 (ns clojure-world-cup-cli.core
-  (:require [clojure.pprint :as pprint :refer [pprint print-table]]
+  (:require [clojure-world-cup-cli.handler.group-handler :as group-handler]
+            [clojure-world-cup-cli.handler.stadium-handler :as stadium-handler]
+            [clojure-world-cup-cli.handler.team-handler :as team-handler]
+            [clojure.pprint :as pprint :refer [pprint print-table]]
             [clojure.tools.cli :refer [parse-opts]]
             [clj-http.client :as client]
             [cheshire.core :refer :all])
@@ -53,8 +56,8 @@
         (clojure.string/join "\n" 
           [(clojure.string/upper-case name)
           ""
-          (format "%s %-10s %s" "🥇" "Winner:" (get (first (filter #(= (:id %) winner) teams)) :emojiString))
-          (format "%s %-10s %s" "🥈" "Runner-Up:" (get (first (filter #(= (:id %) runnerup) teams)) :emojiString))
+          (format "%s %-10s %s" "🥇" "Winner:" (get (team-handler/get-first-team teams winner) :emojiString))
+          (format "%s %-10s %s" "🥈" "Runner-Up:" (get (team-handler/get-first-team teams runnerup) :emojiString))
           ""
           ""]))
       (println "MATCHES:")
@@ -65,10 +68,10 @@
               "Date" (.format (java.text.SimpleDateFormat. "MMM d yyyy, h:mm a") (.parse (java.text.SimpleDateFormat. "yyyy-MM-dd'T'HH:mm:ssXXX") (get keyVal :date)))
               "Result" (format 
                         "%-5s %s:%s %-5s"
-                        (get (first (filter #(= (:id %) (get keyVal :home_team)) teams)) :emojiString)
+                        (get (team-handler/get-first-team teams (get keyVal :home_team)) :emojiString)
                         (get keyVal :home_result)
                         (get keyVal :away_result)
-                        (get (first (filter #(= (:id %) (get keyVal :away_team)) teams)) :emojiString))
+                        (get (team-handler/get-first-team teams (get keyVal :away_team)) :emojiString))
               "Stadium" (get (first (filter #(= (:id %) (get keyVal :stadium)) stadiums)) :name))))))))
     
 (defn show-group [options groups teams stadiums]
