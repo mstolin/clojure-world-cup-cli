@@ -72,26 +72,22 @@
               "Stadium" (get (first (filter #(= (:id %) (get keyVal :stadium)) stadiums)) :name))))))))
     
 (defn show-group [options groups teams stadiums]
-  (let [{:keys [name all]} options]
+  (let [{:keys [name]} options]
     (if-let [group (get groups (keyword name))]
       (print-group group teams stadiums)
       (println "No such group"))))
 
 (defn show-team [options teams]
   (let [{:keys [name all]} options]
-    (if all
-      (println teams)
-      (if-let [team (filter #(= (:name %) name) teams)]
-        (println team)
-        (println "No such team")))))
+    (if-let [team (filter #(= (:name %) name) teams)]
+      (println team)
+      (println "No such team"))))
 
 (defn show-stadium [options stadiums]
-  (let [{:keys [name all]} options]
-    (if all
-      (println stadiums)
-      (if-let [stadium (filter #(= (:name %) name) stadiums)]
-        (println stadium)
-        (println "No such team")))))
+  (let [{:keys [name]} options]
+    (if-let [stadium (filter #(= (:name %) name) stadiums)]
+      (println stadium)
+      (println "No such team"))))
 
 (defn -main [& args]
   (let [{:keys [summary action options]} (validate-args args)]
