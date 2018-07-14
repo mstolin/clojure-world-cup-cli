@@ -10,8 +10,8 @@
         (clojure.string/join "\n" 
         [(clojure.string/upper-case name)
         ""
-        (format "%s %-10s %s" "🥇" "Winner:" (get (team-handler/get-first-team teams winner) :emojiString))
-        (format "%s %-10s %s" "🥈" "Runner-Up:" (get (team-handler/get-first-team teams runnerup) :emojiString))
+        (format "%s %-10s %s" "🥇" "Winner:" (get (team-handler/get-first-team-by-id teams winner) :emojiString))
+        (format "%s %-10s %s" "🥈" "Runner-Up:" (get (team-handler/get-first-team-by-id teams runnerup) :emojiString))
         ""
         ""]))))
 
@@ -24,8 +24,8 @@
                 (for [keyVal matches] 
                     (hash-map 
                     "Date" (.format (java.text.SimpleDateFormat. "MMM d yyyy, h:mm a") (.parse (java.text.SimpleDateFormat. "yyyy-MM-dd'T'HH:mm:ssXXX") (get keyVal :date)))
-                    "Result" (if-let [home-team (team-handler/get-first-team teams (get keyVal :home_team))]
-                                    (if-let [away-team (team-handler/get-first-team teams (get keyVal :away_team))]
+                    "Result" (if-let [home-team (team-handler/get-first-team-by-id teams (get keyVal :home_team))]
+                                    (if-let [away-team (team-handler/get-first-team-by-id teams (get keyVal :away_team))]
                                         (format 
                                         "%-8s %s:%s %-8s"
                                         (get home-team :name)

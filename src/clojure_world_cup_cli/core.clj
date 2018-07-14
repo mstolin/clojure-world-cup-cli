@@ -58,8 +58,8 @@
 
 (defn show-team [options teams]
   (let [{:keys [name all]} options]
-    (if-let [team (filter #(= (:name %) name) teams)]
-      (println team)
+    (if-let [team (team-handler/get-first-team-by-name teams name)]
+      (team-handler/print-team team)
       (println "No such team"))))
 
 (defn show-stadium [options stadiums]
