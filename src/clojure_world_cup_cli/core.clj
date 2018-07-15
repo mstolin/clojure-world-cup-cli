@@ -2,6 +2,7 @@
   (:require [clojure-world-cup-cli.handler.group-handler :as group-handler]
             [clojure-world-cup-cli.handler.stadium-handler :as stadium-handler]
             [clojure-world-cup-cli.handler.team-handler :as team-handler]
+            [clojure-world-cup-cli.handler.match-handler :as match-handler]
             [clojure.tools.cli :refer [parse-opts]]
             [clj-http.client :as client]
             [cheshire.core :refer :all])
@@ -51,21 +52,28 @@
 (defn show-group [options groups teams stadiums]
   (let [{:keys [name]} options]
     (if-let [group (get groups (keyword name))]
-      (do
-        (group-handler/print-group-winner group teams stadiums)
-        (group-handler/print-group-matches group teams stadiums))
+      (let [{:keys [name winner runnerup matches]} group]
+        (do
+          (group-handler/print-name name)
+          (group-handler/print-winner
+            (team-handler/get-first-team-by-id teams winner)
+            (team-handler/get-first-team-by-id teams runnerup))
+          (match-handler/print-matches matches teams stadiums)))
       (println "No such group"))))
+      
 
-(defn show-team [options teams]
+(defn show-team [options teams groups]
   (let [{:keys [name all]} options]
     (if-let [team (team-handler/get-first-team-by-name teams name)]
-      (team-handler/print-team team)
+      (do 
+        (team-handler/print-team team)
+        (team-handler/get-group-of-team groups (get team :id)))
       (println "No such team"))))
 
 (defn show-stadium [options stadiums]
   (let [{:keys [name]} options]
-    (if-let [stadium (filter #(= (:name %) name) stadiums)]
-      (println stadium)
+    (if-let [stadium (stadium-handler/get-first-by-name stadiums name)]
+      (stadium-handler/print-info stadium)
       (println "No such team"))))
 
 (defn -main [& args]
@@ -75,5 +83,5 @@
       (let [{:keys [stadiums groups teams knockout]} (download-world-cup)]
         (case action
           "group" (show-group options groups teams stadiums)
-          "team" (show-team options teams)
+          "team" (show-team options teams groups)
           "stadium" (show-stadium options stadiums))))))
