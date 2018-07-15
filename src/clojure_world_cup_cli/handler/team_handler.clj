@@ -15,3 +15,10 @@
             (format "%s %s"
                 (get team :emojiString)
                 (get team :name)))))
+
+(defn get-group-of-team [groups team-id]
+    (println (into [] (map #(into [] (vals %)) groups))))
+    ;(map [group groups]
+    ;        (let [matches (get (last group) :matches)]
+    ;            (if-let [match (first (filter #(= (:home_team %) team-id) matches))]
+    ;               (last group)))))
