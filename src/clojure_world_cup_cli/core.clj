@@ -11,8 +11,10 @@
 
 
 (def cli-options
-  [["-n" "--name NAME" "The name of a specific group or team"
+  [["-n" "--name NAME" "The name of a specific group, team or stadium"
     :default false]
+   ["-i" "--id ID" "The id of a specific team or stadium"
+    :parse-fn #(Integer/parseInt %)]
    ;["-a" "--all" "List all items"]
    ["-h" "--help" "You are using this option right now :)"]])
 
@@ -63,12 +65,21 @@
       
 
 (defn show-team [options teams groups]
-  (let [{:keys [name all]} options]
-    (if-let [team (team-handler/get-first-team-by-name teams name)]
-      (do 
-        (team-handler/print-team team)
-        (team-handler/get-group-of-team groups (get team :id)))
-      (println "No such team"))))
+  (let [{:keys [name id]} options]
+    (cond
+      (string? name) 
+        (if-let [team (team-handler/get-first-team-by-name teams name)]
+          (do 
+            (team-handler/print-team team)
+            ;(team-handler/get-group-of-team groups (get team :id)))
+        (println "No such team"))
+      (integer? id)
+        (if-let [team (team-handler/get-first-team-by-id teams id)]
+          (do 
+            (team-handler/print-team team)
+            ;(team-handler/get-group-of-team groups (get team :id)))
+        (println "No such team"))
+      :else (println "Please provide a valid name or id."))))
 
 (defn show-stadium [options stadiums]
   (let [{:keys [name]} options]
