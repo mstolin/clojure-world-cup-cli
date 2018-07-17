@@ -78,10 +78,14 @@
       (println "Please provide a valid name or id."))))
 
 (defn show-stadium [options stadiums]
-  (let [{:keys [name]} options]
-    (if-let [stadium (stadium-handler/get-first-by-name stadiums name)]
+  (let [{:keys [name id]} options]
+    (if-let [stadium 
+              (cond
+                (string? name) (stadium-handler/get-first-by-name stadiums name)
+                (integer? id) (stadium-handler/get-first-by-id stadiums id)
+                :else nil)]
       (stadium-handler/print-info stadium)
-      (println "No such team"))))
+      (println "Please provide a valid name or id."))))
 
 (defn -main [& args]
   (let [{:keys [summary action options]} (validate-args args)]
