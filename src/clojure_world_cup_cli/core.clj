@@ -48,6 +48,7 @@
        ""
        "Commands:"
        (format "  %-10s %s" "group" "Shows a specific group (a - h)")
+       (format "  %-10s %s" "stadium" "Shows a specific stadium")
        (format "  %-10s %s" "team" "Shows a specific team")
        ""])))
     
