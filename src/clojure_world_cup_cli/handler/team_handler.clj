@@ -1,11 +1,11 @@
 (ns clojure-world-cup-cli.handler.team-handler
     (:gen-class))
 
-(defn get-first-team-by-id [teams id]
+(defn get-first-by-id [teams id]
     (first 
         (filter #(= (:id %) id) teams)))
 
-(defn get-first-team-by-name [teams name]
+(defn get-first-by-name [teams name]
     (first 
         (filter #(= (:name %) name) teams)))
 

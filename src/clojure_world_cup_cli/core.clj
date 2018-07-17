@@ -69,8 +69,8 @@
   (let [{:keys [name id]} options]
     (if-let [team 
               (cond
-                (string? name) (team-handler/get-first-team-by-name teams name)
-                (integer? id) (team-handler/get-first-team-by-id teams id)
+                (string? name) (team-handler/get-first-by-name teams name)
+                (integer? id) (team-handler/get-first-by-id teams id)
                 :else nil)]
       (do 
         (team-handler/print-team team))
