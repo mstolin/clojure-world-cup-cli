@@ -10,15 +10,17 @@
         (filter #(= (:name %) name) teams)))
 
 (defn print-team [team]
-    (do
-        (println 
-            (format "%s %s"
-                (get team :emojiString)
-                (get team :name)))))
+    (println
+        (clojure.string/join "\n"
+            [
+             (format "️️️%s %-10s: %s" (get team :emojiString) "Name" (get team :name))
+             (format "⚽️ %-10s: %s" "Fifa Code" (get team :fifaCode))
+             (format "⚽️ %-10s: %s" "Group" (clojure.string/upper-case (get team :group)))
+            ])))
 
 (defn get-group-of-team [groups team-id]
     (println (into [] (map #(into [] (vals %)) groups))))
-    ;(map [group groups]
+    ;(conj [group groups]
     ;        (let [matches (get (last group) :matches)]
     ;            (if-let [match (first (filter #(= (:home_team %) team-id) matches))]
     ;               (last group)))))

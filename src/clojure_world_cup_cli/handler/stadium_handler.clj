@@ -5,9 +5,9 @@
     (println
         (clojure.string/join "\n"
             [
-             (format "%-10s: %s" "Name" (get stadium :name))
-             (format "%-10s: %s" "City" (get stadium :city))
-             (format "%-10s: %s, %s" "Coordinate" (get stadium :lat) (get stadium :lng))
+             (format "⚽️ %-10s: %s" "Name" (get stadium :name))
+             (format "🏙  %-10s: %s" "City" (get stadium :city))
+             (format "📍 %-10s: %s, %s" "Coordinate" (get stadium :lat) (get stadium :lng))
             ])))
 
 (defn get-first-by-id [stadiums id]

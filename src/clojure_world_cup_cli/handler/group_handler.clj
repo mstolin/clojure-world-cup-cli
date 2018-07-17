@@ -17,6 +17,5 @@
         ""
         ""])))
 
-(defn get-group-by-team [groups team-id]
-    (first 
-        (filter #(= (:name %) team-id) groups)))
+(defn get-by-name [groups name]
+    (get groups (keyword name)))

@@ -59,13 +59,13 @@
         (do
           (group-handler/print-name name)
           (group-handler/print-winner
-            (team-handler/get-first-team-by-id teams winner)
-            (team-handler/get-first-team-by-id teams runnerup))
+            (team-handler/get-first-by-id teams winner)
+            (team-handler/get-first-by-id teams runnerup))
           (match-handler/print-matches matches teams stadiums)))
       (println "No such group"))))
       
 
-(defn show-team [options teams groups]
+(defn show-team [options teams groups stadiums]
   (let [{:keys [name id]} options]
     (if-let [team 
               (cond
@@ -73,8 +73,11 @@
                 (integer? id) (team-handler/get-first-by-id teams id)
                 :else nil)]
       (do 
-        (team-handler/print-team team))
-        ;(team-handler/get-group-of-team groups (get team :id)))
+        (team-handler/print-team team)
+        (match-handler/print-matches 
+          (get (group-handler/get-by-name groups (get team :group)) :matches) 
+          teams 
+          stadiums))
       (println "Please provide a valid name or id."))))
 
 (defn show-stadium [options stadiums]
@@ -94,5 +97,5 @@
       (let [{:keys [stadiums groups teams knockout]} (download-world-cup)]
         (case action
           "group" (show-group options groups teams stadiums)
-          "team" (show-team options teams groups)
+          "team" (show-team options teams groups stadiums)
           "stadium" (show-stadium options stadiums))))))
