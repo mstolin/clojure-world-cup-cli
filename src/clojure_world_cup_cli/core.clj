@@ -67,20 +67,15 @@
 
 (defn show-team [options teams groups]
   (let [{:keys [name id]} options]
-    (cond
-      (string? name) 
-        (if-let [team (team-handler/get-first-team-by-name teams name)]
-          (do 
-            (team-handler/print-team team)
-            ;(team-handler/get-group-of-team groups (get team :id)))
-        (println "No such team"))
-      (integer? id)
-        (if-let [team (team-handler/get-first-team-by-id teams id)]
-          (do 
-            (team-handler/print-team team)
-            ;(team-handler/get-group-of-team groups (get team :id)))
-        (println "No such team"))
-      :else (println "Please provide a valid name or id."))))
+    (if-let [team 
+              (cond
+                (string? name) (team-handler/get-first-team-by-name teams name)
+                (integer? id) (team-handler/get-first-team-by-id teams id)
+                :else nil)]
+      (do 
+        (team-handler/print-team team))
+        ;(team-handler/get-group-of-team groups (get team :id)))
+      (println "Please provide a valid name or id."))))
 
 (defn show-stadium [options stadiums]
   (let [{:keys [name]} options]
