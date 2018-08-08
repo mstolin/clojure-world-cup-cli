@@ -1,5 +1,6 @@
 (ns clojure-world-cup-cli.handler.group-handler
-    (:require [clojure.pprint :as pprint :refer [print-table]])
+    (:require [clojure.pprint :as pprint :refer [print-table]]
+              [clojure-world-cup-cli.handler.team-handler :as team-handler])
     (:gen-class))
 
 (defn print-name [name]
@@ -48,15 +49,16 @@
                 (and (= home-team team-id) (= home-result away-result))
                 (and (= away-team team-id) (= away-result home-result)))) matches))
 
-(defn print-stats [matches]
-    (print (get-draws (get-games matches 6) 6)))
-    ;(print-table ["Nr." "Name" "Games" "Wins" "Draws" "Losses" "Goals" "Points"]
-    ;    [{
-    ;        "Nr." 1 
-    ;        "Name" "Torben" 
-    ;        "Games" (count (get-games matches 1))
-    ;        "Wins" (count (get-wins (get-games matches 1) 1))
-    ;        "Draw" (count (get-draws (get-games matches 1) 1)) 
-    ;        "Losses" (count (get-losses (get-games matches 1) 1)) 
-    ;        "Goals" 234 
-    ;        "Points" 234}]))
+(defn get-all-teams [matches]
+    (distinct 
+        (map :home_team matches)))
+
+(defn print-stats [teams matches]
+    (print-table ["Name" "Games" "Wins" "Draws" "Losses"] ; "Goals" "Points" 
+        (map 
+            #(hash-map 
+                "Name" (get (team-handler/get-first-by-id teams %) :name)
+                "Games" (count (get-games matches %))
+                "Wins" (count (get-wins (get-games matches %) %))
+                "Draws" (count (get-draws (get-games matches %) %))
+                "Losses" (count (get-losses (get-games matches %) %))) (get-all-teams matches))))
