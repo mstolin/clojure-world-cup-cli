@@ -22,9 +22,9 @@
     (get groups (keyword name)))
 
 (defn get-games [matches team-id]
-    (let [filters [#(= (:home_team %) team-id) #(= (:away_team %) team-id)]]
-        (filter
-            (apply some-fn filters) matches)))
+    (filter
+        (some-fn #(= (:home_team %) team-id)
+                 #(= (:away_team %) team-id)) matches))
 
 (defn print-stats [matches]
     (print-table ["Nr." "Name" "Games" "Wins" "Draw" "Losses" "Goals" "Points"]
