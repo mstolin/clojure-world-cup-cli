@@ -53,12 +53,20 @@
     (distinct 
         (map :home_team matches)))
 
+(defn get-goals [matches team-id]
+    (reduce + 
+        (map 
+            #(if (= (:home_team %) team-id) 
+                (:home_result %) (:away_result %)) matches)))
+
 (defn print-stats [teams matches]
-    (print-table ["Name" "Games" "Wins" "Draws" "Losses"] ; "Goals" "Points" 
+    (print-table ["Name" "Games" "Wins" "Draws" "Losses" "Goals" "Points"] ; "Goals" "Points" 
         (map 
             #(hash-map 
                 "Name" (get (team-handler/get-first-by-id teams %) :name)
                 "Games" (count (get-games matches %))
                 "Wins" (count (get-wins (get-games matches %) %))
                 "Draws" (count (get-draws (get-games matches %) %))
-                "Losses" (count (get-losses (get-games matches %) %))) (get-all-teams matches))))
+                "Losses" (count (get-losses (get-games matches %) %))
+                "Goals" (get-goals (get-games matches %) %)
+                "Points" (* (count (get-wins (get-games matches %) %)) 3)) (get-all-teams matches))))
