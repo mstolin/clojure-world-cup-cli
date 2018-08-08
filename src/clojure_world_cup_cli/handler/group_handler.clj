@@ -60,13 +60,16 @@
                 (:home_result %) (:away_result %)) matches)))
 
 (defn print-stats [teams matches]
-    (print-table ["Name" "Games" "Wins" "Draws" "Losses" "Goals" "Points"] ; "Goals" "Points" 
-        (map 
-            #(hash-map 
-                "Name" (get (team-handler/get-first-by-id teams %) :name)
-                "Games" (count (get-games matches %))
-                "Wins" (count (get-wins (get-games matches %) %))
-                "Draws" (count (get-draws (get-games matches %) %))
-                "Losses" (count (get-losses (get-games matches %) %))
-                "Goals" (get-goals (get-games matches %) %)
-                "Points" (* (count (get-wins (get-games matches %) %)) 3)) (get-all-teams matches))))
+    (print-table [:country :games :wins :draws :losses :goals :points]
+        (reverse 
+            (sort-by 
+                (juxt :points :goals) 
+                    (map 
+                        #(hash-map 
+                            :country (get (team-handler/get-first-by-id teams %) :name)
+                            :games (count (get-games matches %))
+                            :wins (count (get-wins (get-games matches %) %))
+                            :draws (count (get-draws (get-games matches %) %))
+                            :losses (count (get-losses (get-games matches %) %))
+                            :goals (get-goals (get-games matches %) %)
+                            :points (* (count (get-wins (get-games matches %) %)) 3)) (get-all-teams matches))))))
