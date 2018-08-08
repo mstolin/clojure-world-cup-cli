@@ -61,7 +61,8 @@
           (group-handler/print-winner
             (team-handler/get-first-by-id teams winner)
             (team-handler/get-first-by-id teams runnerup))
-          (match-handler/print-matches matches teams stadiums)))
+          ;(match-handler/print-matches matches teams stadiums)
+          (group-handler/print-stats matches)))
       (println "No such group"))))
       
 

@@ -1,7 +1,7 @@
 (ns clojure-world-cup-cli.handler.match-handler
     (:require [clojure-world-cup-cli.handler.stadium-handler :as stadium-handler]
               [clojure-world-cup-cli.handler.team-handler :as team-handler]
-              [clojure.pprint :as pprint :refer [pprint print-table]])
+              [clojure.pprint :as pprint :refer [print-table]])
     (:gen-class))
 
 (defn print-matches [matches teams stadiums]

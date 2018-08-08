@@ -1,4 +1,5 @@
 (ns clojure-world-cup-cli.handler.group-handler
+    (:require [clojure.pprint :as pprint :refer [print-table]])
     (:gen-class))
 
 (defn print-name [name]
@@ -19,3 +20,12 @@
 
 (defn get-by-name [groups name]
     (get groups (keyword name)))
+
+(defn get-games [matches team-id]
+    (let [filters [#(= (:home_team %) team-id) #(= (:away_team %) team-id)]]
+        (filter
+            (apply some-fn filters) matches)))
+
+(defn print-stats [matches]
+    (print-table ["Nr." "Name" "Games" "Wins" "Draw" "Losses" "Goals" "Points"]
+        [{"Nr." 1 "Name" "Torben" "Games" (count (get-games matches 1)) "Wins" 1 "Draw" 5 "Losses" 45 "Goals" 234 "Points" 234}]))

@@ -24,3 +24,6 @@
     ;        (let [matches (get (last group) :matches)]
     ;            (if-let [match (first (filter #(= (:home_team %) team-id) matches))]
     ;               (last group)))))
+
+(defn get-number-of-losses [matches team-id]
+    )
