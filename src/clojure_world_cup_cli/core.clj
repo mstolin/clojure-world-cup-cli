@@ -15,7 +15,6 @@
     :default false]
    ["-i" "--id ID" "The id of a specific team or stadium"
     :parse-fn #(Integer/parseInt %)]
-   ;["-a" "--all" "List all items"]
    ["-h" "--help" "You are using this option right now :)"]])
 
 (defn download-world-cup "" []
@@ -31,7 +30,7 @@
       (:help options) {:summary summary}
       ;; The actions
       (and (= 1 (count arguments))
-           (#{"group", "team", "stadium", "knockout"} (first arguments)))
+           (#{"group" "team" "stadium" "knockout" "round-of-16" "quarter-finals" "semi-finals" "play-off" "final"} (first arguments)))
       {:action (first arguments) :options options}
       ;; The error message
       errors {:summary summary})))
@@ -87,8 +86,13 @@
       (stadium-handler/print-info stadium)
       (println "Please provide a valid name or id."))))
 
-(defn show-knockout [options knockout teams]
-  (print knockout))
+(defn show-knockout [options which knockout teams stadiums]
+  (cond
+    (= which :all) (print "ALL")
+    :else (match-handler/print-matches
+            (get (get knockout which) :matches)
+            teams
+            stadiums)))
 
 (defn -main [& args]
   (let [{:keys [summary action options]} (validate-args args)]
@@ -97,6 +101,11 @@
       (let [{:keys [stadiums groups teams knockout]} (download-world-cup)]
         (case action
           "group" (show-group options groups teams stadiums)
-          "knockout" (show-knockout options knockout teams)
+          "knockout" (show-knockout options :all knockout teams stadiums)
+          "round-of-16" (show-knockout options :round_16 knockout teams stadiums)
+          "quarter-finals" (show-knockout options :round_8 knockout teams stadiums)
+          "semifinals" (show-knockout options :round_4 knockout teams stadiums)
+          "play-off" (show-knockout options :round_2_loser knockout teams stadiums)
+          "final" (show-knockout options :round_2 knockout teams stadiums)
           "team" (show-team options teams groups stadiums)
           "stadium" (show-stadium options stadiums))))))
