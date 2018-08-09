@@ -31,7 +31,7 @@
       (:help options) {:summary summary}
       ;; The actions
       (and (= 1 (count arguments))
-           (#{"group", "team", "stadium"} (first arguments)))
+           (#{"group", "team", "stadium", "knockout"} (first arguments)))
       {:action (first arguments) :options options}
       ;; The error message
       errors {:summary summary})))
@@ -87,6 +87,9 @@
       (stadium-handler/print-info stadium)
       (println "Please provide a valid name or id."))))
 
+(defn show-knockout [options knockout teams]
+  (print knockout))
+
 (defn -main [& args]
   (let [{:keys [summary action options]} (validate-args args)]
     (if summary
@@ -94,5 +97,6 @@
       (let [{:keys [stadiums groups teams knockout]} (download-world-cup)]
         (case action
           "group" (show-group options groups teams stadiums)
+          "knockout" (show-knockout options knockout teams)
           "team" (show-team options teams groups stadiums)
           "stadium" (show-stadium options stadiums))))))
