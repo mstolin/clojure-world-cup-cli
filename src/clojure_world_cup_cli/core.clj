@@ -58,10 +58,6 @@
       (let [{:keys [name winner runnerup matches]} group]
         (do
           (group-handler/print-name name)
-          (group-handler/print-winner
-            (team-handler/get-first-by-id teams winner)
-            (team-handler/get-first-by-id teams runnerup))
-          ;(match-handler/print-matches matches teams stadiums)
           (group-handler/print-stats teams matches)))
       (println "No such group"))))
       

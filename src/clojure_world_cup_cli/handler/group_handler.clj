@@ -1,5 +1,6 @@
 (ns clojure-world-cup-cli.handler.group-handler
     (:require [clojure.pprint :as pprint :refer [print-table]]
+              [clojure.set :refer [rename-keys]]
               [clojure-world-cup-cli.handler.team-handler :as team-handler])
     (:gen-class))
 
@@ -60,16 +61,17 @@
                 (:home_result %) (:away_result %)) matches)))
 
 (defn print-stats [teams matches]
-    (print-table [:country :games :wins :draws :losses :goals :points]
-        (reverse 
-            (sort-by 
-                (juxt :points :goals) 
-                    (map 
-                        #(hash-map 
-                            :country (get (team-handler/get-first-by-id teams %) :name)
-                            :games (count (get-games matches %))
-                            :wins (count (get-wins (get-games matches %) %))
-                            :draws (count (get-draws (get-games matches %) %))
-                            :losses (count (get-losses (get-games matches %) %))
-                            :goals (get-goals (get-games matches %) %)
-                            :points (* (count (get-wins (get-games matches %) %)) 3)) (get-all-teams matches))))))
+    (print-table ["Country" "Games" "Wins" "Draws" "Losses" "Goals" "Points"]
+        (map #(rename-keys % {:country "Country" :games "Games" :wins "Wins" :draws "Draws" :losses "Losses" :goals "Goals" :points "Points"})
+            (reverse 
+                (sort-by 
+                    (juxt :points :goals) 
+                        (map 
+                            #(hash-map 
+                                :country (get (team-handler/get-first-by-id teams %) :name)
+                                :games (count (get-games matches %))
+                                :wins (count (get-wins (get-games matches %) %))
+                                :draws (count (get-draws (get-games matches %) %))
+                                :losses (count (get-losses (get-games matches %) %))
+                                :goals (get-goals (get-games matches %) %)
+                                :points (* (count (get-wins (get-games matches %) %)) 3)) (get-all-teams matches)))))))
