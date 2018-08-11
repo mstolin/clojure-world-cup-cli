@@ -51,8 +51,9 @@
                 (and (= away-team team-id) (= away-result home-result)))) matches))
 
 (defn get-all-teams [matches]
-    (distinct 
-        (map :home_team matches)))
+    (->> matches
+        (map :home_team)
+        distinct))
 
 (defn get-goals [matches team-id]
     (reduce + 
