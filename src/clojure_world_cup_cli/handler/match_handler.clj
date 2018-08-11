@@ -6,7 +6,6 @@
 
 (defn print-matches [matches teams stadiums]
     (print-table ["Date" "Result" "Stadium"]
-        (reverse 
         (for [match matches] 
             (hash-map 
             "Date" (.format (java.text.SimpleDateFormat. "MMM d yyyy, h:mm a") (.parse (java.text.SimpleDateFormat. "yyyy-MM-dd'T'HH:mm:ssXXX") (get match :date)))
@@ -24,4 +23,4 @@
                             "%s (%s)"
                             (get stadium :name)
                             (get stadium :city))
-                        "No such stadium"))))))
+                        "No such stadium")))))
