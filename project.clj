@@ -1,8 +1,8 @@
 (defproject clojure-world-cup-cli "0.1.0-SNAPSHOT"
   :description "A world cup cli written in clojure."
-  :url ""
-  :license {:name "Eclipse Public License"
-            :url "http://www.eclipse.org/legal/epl-v10.html"}
+  :url "https://github.com/mstolin/clojure-world-cup-cli"
+  :license {:name "MIT"
+            :url "https://github.com/mstolin/clojure-world-cup-cli/blob/master/LICENSE"}
   :dependencies [[org.clojure/clojure "1.8.0"] 
                  [org.clojure/tools.cli "0.3.7"]
                  [clj-http "3.9.0"]

@@ -88,12 +88,18 @@
 
 (defn show-knockout [options which knockout teams stadiums]
   (cond
-    (= which :all) (do
-      (match-handler/print-matches (get (get knockout :round_16) :matches) teams stadiums)
-      (match-handler/print-matches (get (get knockout :round_8) :matches) teams stadiums)
-      (match-handler/print-matches (get (get knockout :round_4) :matches) teams stadiums)
-      (match-handler/print-matches (get (get knockout :round_2_loser) :matches) teams stadiums)
-      (match-handler/print-matches (get (get knockout :round_2) :matches) teams stadiums))
+    (= which :all) 
+      (do
+        (print "ROUND OF 16:")
+        (match-handler/print-matches (get (get knockout :round_16) :matches) teams stadiums)
+        (print "\nQUARTER FINALS:")
+        (match-handler/print-matches (get (get knockout :round_8) :matches) teams stadiums)
+        (print "\nSEMIFINALS:")
+        (match-handler/print-matches (get (get knockout :round_4) :matches) teams stadiums)
+        (print "\nPLAY OFF:")
+        (match-handler/print-matches (get (get knockout :round_2_loser) :matches) teams stadiums)
+        (print "\nFINAL:")
+        (match-handler/print-matches (get (get knockout :round_2) :matches) teams stadiums))
     :else (match-handler/print-matches
             (get (get knockout which) :matches)
             teams
