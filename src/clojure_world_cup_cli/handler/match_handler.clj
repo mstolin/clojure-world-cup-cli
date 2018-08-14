@@ -4,12 +4,19 @@
               [clojure.pprint :as pprint :refer [print-table]])
     (:gen-class))
 
-(defn print-matches [matches teams stadiums]
+(defn print-matches 
+    "This function prints all important data of a match:
+    Formatted Date, Result and the Stadium"
+    [matches teams stadiums]
     (print-table ["Date" "Result" "Stadium"]
         (for [match matches] 
             (hash-map 
             "Date" (format "%-22s" 
-                        (.format (java.text.SimpleDateFormat. "MMM d yyyy, h:mm a") (.parse (java.text.SimpleDateFormat. "yyyy-MM-dd'T'HH:mm:ssXXX") (get match :date))))
+                        (.format 
+                            (java.text.SimpleDateFormat. "MMM d yyyy, h:mm a") 
+                            (.parse 
+                                (java.text.SimpleDateFormat. "yyyy-MM-dd'T'HH:mm:ssXXX") 
+                                (get match :date))))
             "Result" (format "%-26s" 
                         (if-let [home-team (team-handler/get-first-by-id teams (get match :home_team))]
                             (if-let [away-team (team-handler/get-first-by-id teams (get match :away_team))]
