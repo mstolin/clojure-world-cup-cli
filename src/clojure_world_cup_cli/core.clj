@@ -4,8 +4,7 @@
             [clojure-world-cup-cli.handler.team-handler :as team-handler]
             [clojure-world-cup-cli.handler.match-handler :as match-handler]
             [clojure.tools.cli :refer [parse-opts]]
-            [clj-http.client :as client]
-            [cheshire.core :refer :all])
+            [clojure.data.json :as json])
   (:gen-class))
 
 
@@ -17,9 +16,10 @@
     :parse-fn #(Integer/parseInt %)]
    ["-h" "--help" "You are using this option right now :)"]])
 
-(defn download-world-cup "" []
-  (:body
-    (client/get "https://raw.githubusercontent.com/mstolin/fifa-worldcup-2018/master/data.json" {:as :json})))
+(defn read-data "" []
+  (json/read-str 
+    (slurp "./assets/data.json") 
+    :key-fn keyword))
 
 (defn validate-args
   ""
@@ -109,7 +109,7 @@
   (let [{:keys [summary action options]} (validate-args args)]
     (if summary
       (print-help summary)
-      (let [{:keys [stadiums groups teams knockout]} (download-world-cup)]
+      (let [{:keys [stadiums groups teams knockout]} (read-data)]
         (case action
           "group" (show-group options groups teams stadiums)
           "knockout" (show-knockout options :all knockout teams stadiums)

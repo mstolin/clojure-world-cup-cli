@@ -5,8 +5,7 @@
             :url "https://github.com/mstolin/clojure-world-cup-cli/blob/master/LICENSE"}
   :dependencies [[org.clojure/clojure "1.8.0"] 
                  [org.clojure/tools.cli "0.3.7"]
-                 [clj-http "3.9.0"]
-                 [cheshire "5.8.0"]]
+                 [org.clojure/data.json "0.2.6"]]
   :main ^:skip-aot clojure-world-cup-cli.core
   :target-path "target"
   :profiles {:uberjar {:aot :all}}
