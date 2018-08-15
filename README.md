@@ -1,4 +1,5 @@
 # World Cup CLI
+[![Build Status](https://travis-ci.org/mstolin/clojure-world-cup-cli.svg?branch=master)](https://travis-ci.org/mstolin/clojure-world-cup-cli)
 
 FIXME: description
 
