@@ -70,3 +70,50 @@
         (is (= (get group-a :winner) 4))
         (is (= (get group-a :runnerup) 1))
         (is (= (count (get group-a :matches)) 6))))))
+
+(deftest count-number-of-games
+  (testing "Count the number of games"
+    (is 
+      (= 
+        (count
+          (group-handler/get-games 
+            (get (get groups :a) :matches) 1)) 3))))
+
+(deftest count-number-of-wins
+  (testing "Count the number of wins"
+    (is
+      (=
+        (count 
+          (group-handler/get-wins 
+            (get (get groups :a) :matches) 1)) 2))))
+
+(deftest count-number-of-draws
+  (testing "Count the number of draws"
+    (is
+      (=
+        (count 
+          (group-handler/get-draws 
+            (get (get groups :a) :matches) 1)) 0))))
+
+(deftest count-number-of-defeats
+  (testing "Count the number of defeats"
+    (is
+      (=
+        (count 
+          (group-handler/get-defeats 
+            (get (get groups :a) :matches) 1)) 1))))
+
+(deftest count-number-of-teams
+  (testing "Count the number of teams in a match"
+    (is
+      (=
+        (count 
+          (group-handler/get-all-teams 
+            (get (get groups :a) :matches))) 4))))
+
+(deftest count-number-of-goals
+  (testing "Count the number of goals"
+    (is
+      (=
+        (group-handler/get-goals 
+          (get (get groups :a) :matches) 1)) 8)))
