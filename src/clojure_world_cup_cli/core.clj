@@ -30,7 +30,7 @@
       (:help options) {:summary summary}
       ;; The actions
       (and (= 1 (count arguments))
-           (#{"group" "team" "stadium" "knockout" "round-of-16" "quarter-finals" "semi-finals" "play-off" "final"} (first arguments)))
+           (#{"group" "team" "stadium" "knockout" "round-of-16" "quarter-final" "semi-final" "play-off" "final"} (first arguments)))
       {:action (first arguments) :options options}
       ;; The error message
       errors {:summary summary})))
@@ -46,10 +46,15 @@
        message
        ""
        "Commands:"
-       (format "  %-10s %s" "group" "Shows a specific group (a - h)")
-       (format "  %-10s %s" "knockout" "Shows the knockout phase")
-       (format "  %-10s %s" "stadium" "Shows a specific stadium")
-       (format "  %-10s %s" "team" "Shows a specific team")
+       (format "  %-23s %s" "final" "Shows the final game")
+       (format "  %-23s %s" "group" "Shows a specific group (a - h)")
+       (format "  %-23s %s" "knockout" "Shows the knockout phase")
+       (format "  %-23s %s" "play-off" "Shows the play-off")
+       (format "  %-23s %s" "quarter-final" "Shows the quarter final")
+       (format "  %-23s %s" "round-of-16" "Shows the round-of-16")
+       (format "  %-23s %s" "semi-final" "Shows the semi final")
+       (format "  %-23s %s" "stadium" "Shows a specific stadium")
+       (format "  %-23s %s" "team" "Shows a specific team")
        ""])))
     
 (defn show-group [options groups teams stadiums]
