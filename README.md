@@ -39,4 +39,4 @@ Just run `lein test`
 
 ## License
 
-[MIT!](https://github.com/mstolin/clojure-world-cup-cli/blob/master/LICENSE)
+[MIT](https://github.com/mstolin/clojure-world-cup-cli/blob/master/LICENSE)
