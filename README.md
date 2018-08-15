@@ -1,7 +1,7 @@
 # World Cup CLI
 [![Build Status](https://travis-ci.org/mstolin/clojure-world-cup-cli.svg?branch=master)](https://travis-ci.org/mstolin/clojure-world-cup-cli)
 
-This is a command line interface for the FIFA world cup 2018.
+This is a command line interface for the FIFA world cup 2018 written in clojure. I developed this project for a university project.
 
 ## Installation
 
@@ -35,7 +35,7 @@ Commands:
 
 ## Tests
 
-Just run `lein test`
+Just run `lein test`.
 
 ## License
 
