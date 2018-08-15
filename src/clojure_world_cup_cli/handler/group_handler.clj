@@ -44,8 +44,8 @@
                 (and (= home-team team-id) (> home-result away-result))
                 (and (= away-team team-id) (> away-result home-result)))) matches))
 
-(defn get-losses 
-    "Returns a vector of all losses for the given team."
+(defn get-defeats 
+    "Returns a vector of all defeats for the given team."
     [matches team-id]
     (filter
         #(let [home-team (% :home_team) away-team (% :away_team) home-result (% :home_result) away-result (% :away_result)]
@@ -70,7 +70,7 @@
         distinct))
 
 (defn get-goals 
-    "Returns a vector of all goals for the given team."
+    "Returns a number of all goals for the given team."
     [matches team-id]
     (reduce + 
         (map 
@@ -83,8 +83,8 @@
     Country, number of Games in the match, number of wins, 
     number of losses, number of goals and the calculated points"
     [teams matches]
-    (print-table ["Country" "Games" "Wins" "Draws" "Losses" "Goals" "Points"]
-        (map #(rename-keys % {:country "Country" :games "Games" :wins "Wins" :draws "Draws" :losses "Losses" :goals "Goals" :points "Points"})
+    (print-table ["Country" "Games" "Wins" "Draws" "defeats" "Goals" "Points"]
+        (map #(rename-keys % {:country "Country" :games "Games" :wins "Wins" :draws "Draws" :defeats "defeats" :goals "Goals" :points "Points"})
             (reverse 
                 (sort-by 
                     (juxt :points :goals) 
@@ -94,6 +94,6 @@
                                 :games (count (get-games matches %))
                                 :wins (count (get-wins (get-games matches %) %))
                                 :draws (count (get-draws (get-games matches %) %))
-                                :losses (count (get-losses (get-games matches %) %))
+                                :losses (count (get-defeats (get-games matches %) %))
                                 :goals (get-goals (get-games matches %) %)
                                 :points (* (count (get-wins (get-games matches %) %)) 3)) (get-all-teams matches)))))))
