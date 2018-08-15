@@ -1,0 +1,6 @@
+language: clojure
+lein: lein
+script: lein do clean, javac, test
+branches:
+  only:
+    - master
