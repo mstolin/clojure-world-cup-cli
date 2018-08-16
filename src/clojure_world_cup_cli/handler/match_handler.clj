@@ -34,3 +34,24 @@
                                 (get stadium :name)
                                 (get stadium :city))
                             "No such stadium"))))))
+
+(defn get-matches-for-stadium [matches stadium-id]
+    (filter #(= (:stadium %) stadium-id) matches))
+
+(defn get-all-for-stadium [groups knockout stadium-id]
+    (remove nil?
+        (sort-by :date
+            (concat
+                (get-matches-for-stadium (get (get groups :a) :matches) stadium-id)
+                (get-matches-for-stadium (get (get groups :b) :matches) stadium-id)
+                (get-matches-for-stadium (get (get groups :c) :matches) stadium-id)
+                (get-matches-for-stadium (get (get groups :d) :matches) stadium-id)
+                (get-matches-for-stadium (get (get groups :e) :matches) stadium-id)
+                (get-matches-for-stadium (get (get groups :f) :matches) stadium-id)
+                (get-matches-for-stadium (get (get groups :g) :matches) stadium-id)
+                (get-matches-for-stadium (get (get groups :h) :matches) stadium-id)
+                (get-matches-for-stadium (get (get knockout :round_16) :matches) stadium-id)
+                (get-matches-for-stadium (get (get knockout :round_8) :matches) stadium-id)
+                (get-matches-for-stadium (get (get knockout :round_4) :matches) stadium-id)
+                (get-matches-for-stadium (get (get knockout :round_2_loser) :matches) stadium-id)
+                (get-matches-for-stadium (get (get knockout :round_2) :matches) stadium-id)))))
