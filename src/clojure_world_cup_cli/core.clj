@@ -82,30 +82,46 @@
           stadiums))
       (println "Please provide a valid name or id."))))
 
-(defn show-stadium [options stadiums]
+(defn show-stadium [options stadiums groups knockout teams]
   (let [{:keys [name id]} options]
     (if-let [stadium 
               (cond
                 (string? name) (stadium-handler/get-first-by-name stadiums name)
                 (integer? id) (stadium-handler/get-first-by-id stadiums id)
                 :else nil)]
-      (stadium-handler/print-info stadium)
+      (do
+        (stadium-handler/print-info stadium)
+        (print "\nMatches:")
+        (match-handler/print-matches 
+          (match-handler/get-all-for-stadium groups knockout (get stadium :id)) 
+          teams stadiums))
       (println "Please provide a valid name or id."))))
 
 (defn show-knockout [options which knockout teams stadiums]
   (cond
     (= which :all) 
       (do
-        (print "ROUND OF 16:")
+        (println "|--------------------------------------------------------------------------------------------------|")
+        (println (format "| %-97s|""ROUND OF 16:"))
+        (print "|------------------------+----------------------------+--------------------------------------------|")
         (match-handler/print-matches (get (get knockout :round_16) :matches) teams stadiums)
-        (print "\nQUARTER FINALS:")
+        (println "|------------------------+----------------------------+--------------------------------------------|")
+        (println (format "| %-97s|" "QUARTER FINAL:"))
+        (print "|------------------------+----------------------------+--------------------------------------------|")
         (match-handler/print-matches (get (get knockout :round_8) :matches) teams stadiums)
-        (print "\nSEMIFINALS:")
+        (println "|------------------------+----------------------------+--------------------------------------------|")
+        (println (format "| %-97s|" "SEMIFINAL:"))
+        (print "|------------------------+----------------------------+--------------------------------------------|")
         (match-handler/print-matches (get (get knockout :round_4) :matches) teams stadiums)
-        (print "\nPLAY OFF:")
+        (println "|------------------------+----------------------------+--------------------------------------------|")
+        (println (format "| %-97s|" "PLAY OFF:"))
+        (print "|------------------------+----------------------------+--------------------------------------------|")
         (match-handler/print-matches (get (get knockout :round_2_loser) :matches) teams stadiums)
-        (print "\nFINAL:")
-        (match-handler/print-matches (get (get knockout :round_2) :matches) teams stadiums))
+        (println "|------------------------+----------------------------+--------------------------------------------|")
+        (println (format "| %-97s|" "FINAL:"))
+        (print "|------------------------+----------------------------+--------------------------------------------|")
+        (match-handler/print-matches (get (get knockout :round_2) :matches) teams stadiums)
+        (print "|------------------------+----------------------------+--------------------------------------------|"))
     :else (match-handler/print-matches
             (get (get knockout which) :matches)
             teams
@@ -125,4 +141,4 @@
           "play-off" (show-knockout options :round_2_loser knockout teams stadiums)
           "final" (show-knockout options :round_2 knockout teams stadiums)
           "team" (show-team options teams groups stadiums)
-          "stadium" (show-stadium options stadiums))))))
+          "stadium" (show-stadium options stadiums groups knockout teams))))))
