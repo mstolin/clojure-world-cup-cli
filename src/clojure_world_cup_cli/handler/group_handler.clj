@@ -83,8 +83,8 @@
     Country, number of Games in the match, number of wins, 
     number of losses, number of goals and the calculated points"
     [teams matches]
-    (print-table ["Country" "Games" "Wins" "Draws" "defeats" "Goals" "Points"]
-        (map #(rename-keys % {:country "Country" :games "Games" :wins "Wins" :draws "Draws" :defeats "defeats" :goals "Goals" :points "Points"})
+    (print-table ["Country" "Games" "Wins" "Draws" "Defeats" "Goals" "Points"]
+        (map #(rename-keys % {:country "Country" :games "Games" :wins "Wins" :draws "Draws" :defeats "Defeats" :goals "Goals" :points "Points"})
             (reverse 
                 (sort-by 
                     (juxt :points :goals) 
@@ -94,6 +94,6 @@
                                 :games (count (get-games matches %))
                                 :wins (count (get-wins (get-games matches %) %))
                                 :draws (count (get-draws (get-games matches %) %))
-                                :losses (count (get-defeats (get-games matches %) %))
+                                :defeats (count (get-defeats (get-games matches %) %))
                                 :goals (get-goals (get-games matches %) %)
                                 :points (* (count (get-wins (get-games matches %) %)) 3)) (get-all-teams matches)))))))
